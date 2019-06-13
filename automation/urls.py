@@ -11,12 +11,14 @@ from .views import SchedulingCreateView, SchedulingListView, SchedulingDeleteVie
 urlpatterns = [
     # List and detail views
     re_path(r'^$', SchedulingListView.as_view(), name='list_schedules'),
-    re_path(r'^(?P<pk>[0-9]+)$',SchedulingDetailView.as_view(),name='view_schedules'),
-    path('new/', SchedulingCreateView.as_view(), name='new_schedule'),
+    re_path(r'^(?P<pk>[0-9]+)$',
+            SchedulingDetailView.as_view(),
+            name='view_schedules'),
+
     # Create, update, delete
-    # re_path(r'^new$', SchedulingCreateView.as_view(), name='new_schedule'),
-    re_path(r'^(?P<pk>[0-9]+)/edit$',SchedulingUpdateView.as_view(),name='edit_schedule'),
-    re_path(r'^(?P<pk>[0-9]+)/delete$',SchedulingDeleteView.as_view(),name='delete_schedule'),
+    path('new/', SchedulingCreateView.as_view(), name='new_schedule'),
+    path('<int:pk>/edit',SchedulingUpdateView.as_view(), name='edit_schedule'),
+    path('<int:pk>/delete', SchedulingDeleteView.as_view(),name='delete_schedule'),
 ]
 
 

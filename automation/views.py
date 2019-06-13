@@ -18,6 +18,7 @@ class SchedulingCreateView(SuccessMessageMixin, CreateView):
     model = Scheduling
     fields = ['name', 'phone_number', 'time', 'time_zone']
     success_message = 'Schedule successfully created.'
+    success_url = reverse_lazy('list_schedules')
     
 class SchedulingListView(ListView):
     """Shows users a list of schedules"""
@@ -40,6 +41,7 @@ class SchedulingUpdateView(SuccessMessageMixin, UpdateView):
     model = Scheduling
     fields = ['name', 'phone_number', 'time', 'time_zone']
     success_message = 'Schedule successfully updated.'
+    success_url = reverse_lazy('view_schedules')
 
 
 class SchedulingDeleteView(DeleteView):
