@@ -17,4 +17,4 @@ class Scheduling(models.Model):
         return 'Scheduling #{0} - {1}'.format(self.pk, self.name)
 
     def get_absolute_url(self):
-            return reverse('view_scheduling', args=[str(self.id)])
+        return reverse('view_scheduling', args=[str(self.id)])
