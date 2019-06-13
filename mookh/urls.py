@@ -21,7 +21,7 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     re_path(r'^$',
-            TemplateView.as_view(template_name='index.html'),
+            TemplateView.as_view(template_name='automation/index.html'),
             name='home'),
     re_path(r'^schedules/', include('automation.urls')),
 
