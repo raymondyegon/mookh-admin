@@ -7,7 +7,7 @@ from .views import SchedulingCreateView
 
 
 urlpatterns = [
-    path(r'^new$', SchedulingCreateView.as_view(), name='new_scheduling'),
+    path('new/', SchedulingCreateView.as_view(), name='new_scheduling'),
 ]
 
 

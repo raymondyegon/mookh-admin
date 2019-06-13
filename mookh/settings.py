@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'bootstrap4',
+    'django_forms_bootstrap',
     'rest_framework.authtoken',
     'rest_framework',
     'imagekit',

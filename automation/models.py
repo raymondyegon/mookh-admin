@@ -1,5 +1,6 @@
 from django.db import models
 from timezone_field import TimeZoneField
+from django.urls import reverse
 
 # Create your models here.
 class Scheduling(models.Model):
@@ -14,3 +15,6 @@ class Scheduling(models.Model):
 
     def __str__(self):
         return 'Scheduling #{0} - {1}'.format(self.pk, self.name)
+
+    def get_absolute_url(self):
+            return reverse('view_scheduling', args=[str(self.id)])
