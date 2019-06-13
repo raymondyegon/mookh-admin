@@ -20,7 +20,7 @@ def send_sms_reminder(schedule_id):
     # Get our schedule from the database
     try:
         schedule = Scheduling.objects.get(pk=schedule_id)
-    except Schedule.DoesNotExist:
+    except Scheduling.DoesNotExist:
         # The schedule we were trying to remind someone about
         # has been deleted, so we don't need to do anything
         return
