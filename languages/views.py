@@ -7,6 +7,7 @@ from .models import Language
 from .serializers import LanguageSerializer, UserSerializer
 
 from django.contrib.auth.models import User
+
 class LanguageView(viewsets.ModelViewSet):
     queryset = Language.objects.all()
     serializer_class = LanguageSerializer
@@ -15,3 +16,5 @@ class LanguageView(viewsets.ModelViewSet):
 class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
