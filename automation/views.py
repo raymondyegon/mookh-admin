@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from .models import Scheduling
+from django.views.generic import CreateView
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 # Create your views here.
 class SchedulingCreateView(SuccessMessageMixin, CreateView):
