@@ -1,0 +1,1 @@
+web: gunicorn JRF.wsgi
