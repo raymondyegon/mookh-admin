@@ -22,6 +22,27 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 't5q9c&24jwr!dq66yv6%te%_qt)vkifylw$&q^az6-s&i-tasy'
 
+# DRAMATIQ BROKER SETTINGS
+DRAMATIQ_BROKER = {
+    "BROKER": "dramatiq.brokers.redis.RedisBroker",
+    "OPTIONS": {
+        "url": 'redis://localhost:6379/0',
+    },
+    "MIDDLEWARE": [
+        "dramatiq.middleware.Prometheus",
+        "dramatiq.middleware.AgeLimit",
+        "dramatiq.middleware.TimeLimit",
+        "dramatiq.middleware.Callbacks",
+        "dramatiq.middleware.Retries",
+        "django_dramatiq.middleware.AdminMiddleware",
+        "django_dramatiq.middleware.DbConnectionsMiddleware",
+    ]
+}
+
+# Defines which database should be used to persist Task objects when the
+# AdminMiddleware is enabled.  The default value is "default".
+# DRAMATIQ_TASKS_DATABASE = "default"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -35,6 +56,7 @@ INSTALLED_APPS = [
     'django_forms_bootstrap',
     'rest_framework.authtoken',
     'rest_framework',
+    'django-dramatiq',
     'timezone_field',
     'imagekit',
     'django_registration',
