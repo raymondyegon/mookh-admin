@@ -31,10 +31,6 @@ class SchedulingDetailView(DetailView):
 
     model = Scheduling
 
-
-
-
-
 class SchedulingUpdateView(SuccessMessageMixin, UpdateView):
     """Powers a form to edit existing schedules"""
 
@@ -49,3 +45,4 @@ class SchedulingDeleteView(DeleteView):
 
     model = Scheduling
     success_url = reverse_lazy('list_schedules')
+
