@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django_forms_bootstrap',
     'rest_framework.authtoken',
     'rest_framework',
+    'timezone_field',
     'imagekit',
     'django_registration',
     'automation',
