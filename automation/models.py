@@ -27,6 +27,16 @@ class Scheduling(models.Model):
     def get_absolute_url(self):
         return reverse('view_schedules', args=[str(self.id)])
 
+    def clean(self):
+        """Checks that appointments are not scheduled in the past"""
+
+        schedule_time = arrow.get(self.time, self.time_zone.zone)
+
+        if schedule_time < arrow.utcnow():
+            raise ValidationError(
+                'You cannot schedule an appointment for the past. '
+                'Please check your time and time_zone')
+
     def schedule_reminder(self):
             """Schedule a Dramatiq task to send a reminder for this schedule"""
 
