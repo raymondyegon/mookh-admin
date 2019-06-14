@@ -1,6 +1,14 @@
+from __future__ import unicode_literals
+
+import redis
+
+from django.core.exceptions import ValidationError
 from django.db import models
-from timezone_field import TimeZoneField
 from django.urls import reverse
+from django.utils.encoding import python_2_unicode_compatible
+from timezone_field import TimeZoneField
+
+import arrow
 
 # Create your models here.
 class Scheduling(models.Model):
@@ -36,3 +44,25 @@ class Scheduling(models.Model):
                 delay=milli_to_wait)
 
             return result.options['redis_message_id']
+
+    def save(self, *args, **kwargs):
+        """Custom save method which also schedules a reminder"""
+
+        # Check if we have scheduled a reminder for this schedule before
+        if self.task_id:
+            # Revoke that task in case its time has changed
+            self.cancel_task()
+
+        # Save our schedule, which populates self.pk,
+        # which is used in schedule_reminder
+        super(Scheduling, self).save(*args, **kwargs)
+
+        # Schedule a new reminder task for this appointment
+        self.task_id = self.schedule_reminder()
+
+        # Save our schedule again, with the new task_id
+        super(Scheduling, self).save(*args, **kwargs)
+
+    def cancel_task(self):
+        redis_client = redis.Redis(host='localhost', port=6379, db=0)
+        redis_client.hdel("dramatiq:default.DQ.msgs", self.task_id)

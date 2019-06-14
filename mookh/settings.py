@@ -27,9 +27,13 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Twilio API
-TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
-TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
-TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+# TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
+# TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+# TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+
+TWILIO_NUMBER = '254724780529'
+TWILIO_ACCOUNT_SID = 'ACc40af3aeaa63b5f8a04cb209d0cc21ba'
+TWILIO_AUTH_TOKEN = 'dcec0f648cc02f4d8c335d7cb4c57da2'
 
 DRAMATIQ_BROKER = {
     "BROKER": "dramatiq.brokers.redis.RedisBroker",
@@ -48,7 +52,7 @@ DRAMATIQ_BROKER = {
 }
 
 # Reminder time: how early text messages are sent in advance of schedules
-REMINDER_TIME = 30  # minutes
+REMINDER_TIME = 1  # minutes
 
 ALLOWED_HOSTS = []
 
