@@ -70,6 +70,7 @@ DJANGO_APPS = (
 
 THIRD_PARTY_APPS = (
     'bootstrap4',
+    'bootstrap3',
     'django_forms_bootstrap',
     'timezone_field'
 )

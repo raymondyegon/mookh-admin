@@ -1,4 +1,4 @@
-{% extends "automation/base.html" %}
+{% extends "base.html" %}
 
 {% load bootstrap_tags %}
 
@@ -10,9 +10,9 @@
       <div class="page-header">
         <h1>
           {% if not object.pk %}
-            New schedule
+            New appointment
           {% else %}
-            Edit schedule
+            Edit appointment
           {% endif %}
           </h1>
       </div>
@@ -25,9 +25,9 @@
             <a href="#back" class="btn btn-default">Cancel</a>
             <button type="submit" class="btn btn-primary">
               {% if not object.pk %}
-                Create schedule
+                Create appointment
               {% else %}
-                Update schedule
+                Update appointment
               {% endif %}
             </button>
           </div>
