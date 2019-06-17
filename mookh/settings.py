@@ -27,13 +27,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Twilio API
-# TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
-# TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
-# TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+TWILIO_NUMBER = '+18183517087'
+TWILIO_ACCOUNT_SID = 'ACbf5ce1913ccf29add4fce223bf3793eb'
+TWILIO_AUTH_TOKEN = '69eebb1494cbf6960029840ebca952ed'
 
-TWILIO_NUMBER = '254724780529'
-TWILIO_ACCOUNT_SID = 'ACc40af3aeaa63b5f8a04cb209d0cc21ba'
-TWILIO_AUTH_TOKEN = 'dcec0f648cc02f4d8c335d7cb4c57da2'
+
 
 DRAMATIQ_BROKER = {
     "BROKER": "dramatiq.brokers.redis.RedisBroker",
@@ -121,8 +119,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mookh_project',
-        'USER': 'komo',
-        'PASSWORD': 'komo',
+        'USER': 'ray',
+        'PASSWORD': '12345',
     }
 }
 
@@ -132,7 +130,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 

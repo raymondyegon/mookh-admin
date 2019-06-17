@@ -15,7 +15,7 @@ class Scheduling(models.Model):
     name = models.CharField(max_length=150)
     phone_number = models.CharField(max_length=15)
     time = models.DateTimeField()
-    time_zone = TimeZoneField(default='UTC')
+    time_zone = TimeZoneField(default='Africa/Nairobi')
 
     # Additional fields not visible to users
     task_id = models.CharField(max_length=50, blank=True, editable=False)
