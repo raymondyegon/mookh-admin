@@ -11,6 +11,8 @@ from timezone_field import TimeZoneField
 import arrow
 
 # Create your models here.
+
+
 class Scheduling(models.Model):
     name = models.CharField(max_length=150)
     phone_number = models.CharField(max_length=15)
@@ -38,22 +40,22 @@ class Scheduling(models.Model):
                 'Please check your time and time_zone')
 
     def schedule_reminder(self):
-            """Schedule a Dramatiq task to send a reminder for this schedule"""
+        """Schedule a Dramatiq task to send a reminder for this schedule"""
 
-            # Calculate the correct time to send this reminder
-            schedule_time = arrow.get(self.time, self.time_zone.zone)
-            reminder_time = schedule_time.shift(minutes=-30)
-            now = arrow.now(self.time_zone.zone)
-            milli_to_wait = int(
-                (reminder_time - now).total_seconds()) * 1000
+        # Calculate the correct time to send this reminder
+        schedule_time = arrow.get(self.time, self.time_zone.zone)
+        reminder_time = schedule_time.shift(minutes=-30)
+        now = arrow.now(self.time_zone.zone)
+        milli_to_wait = int(
+            (reminder_time - now).total_seconds()) * 1000
 
-            # Schedule the Dramatiq task
-            from .tasks import send_sms_reminder
-            result = send_sms_reminder.send_with_options(
-                args=(self.pk,),
-                delay=milli_to_wait)
+        # Schedule the Dramatiq task
+        from .tasks import send_sms_reminder
+        result = send_sms_reminder.send_with_options(
+            args=(self.pk,),
+            delay=milli_to_wait)
 
-            return result.options['redis_message_id']
+        return result.options['redis_message_id']
 
     def save(self, *args, **kwargs):
         """Custom save method which also schedules a reminder"""
@@ -76,3 +78,48 @@ class Scheduling(models.Model):
     def cancel_task(self):
         redis_client = redis.Redis(host='localhost', port=6379, db=0)
         redis_client.hdel("dramatiq:default.DQ.msgs", self.task_id)
+
+# New group
+
+
+class AddUser(models.Model):
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    email = models.EmailField()
+    phone = models.PositiveIntegerField(null=True)
+
+    def __str__(self):
+        return self.email
+
+    @property
+    def full_name(self):
+        "Returns the person's full name."
+        return '%s %s' % (self.first_name, self.last_name)
+
+
+class EmailGroup(models.Model):
+    Title = models.CharField(max_length=150)
+    users = models.ForeignKey(
+        AddUser, on_delete=models.CASCADE, null=True)
+    members = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.Title
+
+    def create_EmailGroup(self):
+        self.save()
+
+    def delete_EmailGroup(self):
+        self.delete()
+
+    def update_EmailGroup(self):
+        self.save()
+
+    def update_members(self):
+        self.members += 1
+        self.save()
+
+    @classmethod
+    def find_EmailGroup(cls, emailgroup_id):
+        emailgroup = cls.objects.get(id=emailgroup_id)
+        return emailgroup
