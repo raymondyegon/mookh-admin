@@ -28,10 +28,10 @@ ALLOWED_HOSTS = []
 
 # Twilio API
 # TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
-# TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+# TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')echo 16384 | sudo tee /proc/sys/fs/inotify/max_user_watches
 # TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
 
-TWILIO_NUMBER = '254724780529'
+TWILIO_NUMBER = '+12565703798'
 TWILIO_ACCOUNT_SID = 'ACc40af3aeaa63b5f8a04cb209d0cc21ba'
 TWILIO_AUTH_TOKEN = 'dcec0f648cc02f4d8c335d7cb4c57da2'
 
@@ -52,7 +52,7 @@ DRAMATIQ_BROKER = {
 }
 
 # Reminder time: how early text messages are sent in advance of schedules
-REMINDER_TIME = 1  # minutes
+REMINDER_TIME = 2  # minutes
 
 ALLOWED_HOSTS = []
 
@@ -71,6 +71,7 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'bootstrap4',
     'bootstrap3',
+    'admin_email_sender',
     'django_forms_bootstrap',
     'timezone_field'
 )

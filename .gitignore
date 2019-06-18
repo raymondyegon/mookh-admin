@@ -4,3 +4,4 @@ virtual/
 db.sqlite3
 .vscode/
 
+sendgrid.env
