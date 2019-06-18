@@ -73,7 +73,15 @@ THIRD_PARTY_APPS = (
     'bootstrap3',
     'admin_email_sender',
     'django_forms_bootstrap',
-    'timezone_field'
+    'timezone_field',
+
+    'fluent_dashboard',
+
+    # enable the admin
+    'admin_tools',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
 )
 
 LOCAL_APPS = (
@@ -99,13 +107,19 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ['templates/'],
-        'APP_DIRS': True,
+        # 'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
+            ],
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+                'admin_tools.template_loaders.Loader',
             ],
         },
     },
@@ -144,6 +158,12 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# FLUENT DASHBOARD
+
+ADMIN_TOOLS_INDEX_DASHBOARD = 'fluent_dashboard.dashboard.FluentIndexDashboard'
+ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'fluent_dashboard.dashboard.FluentAppIndexDashboard'
+ADMIN_TOOLS_MENU = 'fluent_dashboard.menu.FluentMenu'
 
 
 # Static files (CSS, JavaScript, Images)
