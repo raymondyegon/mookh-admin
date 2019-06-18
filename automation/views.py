@@ -5,8 +5,12 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+from django.shortcuts import render
+
 
 from .models import Appointment
+
+
 
 
 class AppointmentListView(ListView):
@@ -44,4 +48,66 @@ class AppointmentDeleteView(DeleteView):
     success_url = reverse_lazy('list_appointments')
 
 
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 
+def sendEmail(request):
+    send_mail("Your Subject", "This is a simple text email body.",
+    "James Komo <james.komoh@gmail.com>", ["juniorgichohi@gmail.com"])
+    mail = EmailMultiAlternatives(
+    subject="Your Subject",
+    body="This is a simple text email body.",
+    from_email="James Komo <james.komoh@gmail.com>",
+    to=["juniorgichohi@gmail.com"],
+    )
+    # Add template
+    mail.template_id = 'd-dee240da903344fdb5c3f16896f489b0'
+
+    # # Replace substitutions in sendgrid template
+    # mail.substitutions = {'%username%': 'komo'}
+
+    # Attach file
+    # with open('somefilename.pdf', 'rb') as file:
+    #     mail.attachments = [
+    #         ('somefilename.pdf', file.read(), 'application/pdf')
+    #     ]
+
+    # Add categories
+    mail.categories = [
+        'work',
+        'urgent',
+    ]
+
+    mail.attach_alternative(
+        "<p>This is a simple HTML email body</p>", "text/html"
+    )
+
+    mail.send()
+    return render(request, 'appointments/send-email/emailsent.html')
+
+# # sending email
+# def send_email(request):
+
+#     all_users = User.objects.all()
+#     subject ='Newsletter'
+#     from_email = settings.DEFAULT_FROM_EMAIL
+
+#     # newsletter content below. can also entered via txt file or html file
+#     content_message = 'Newsletter content <a href="https://programmedtocode.wordpress.com/>CLICK LINK</a>"'
+#     for user_email in all_users:
+#         """
+#         to_email = [user_email.email]
+#         context = {
+#         'email' : from_email,
+#         'message' : content_message,
+#         }
+#         final_send_content = get_template('Newsletter_content.txt').render(context)
+#         """
+
+#         if user_email.username == 'owner':  # to ignore superuser 'owner' 
+#             continue
+#         else:
+#             to_email = user_email.email
+#             send_mail(subject,content_message,from_email, [to_email], fail_silently=True)
+
+#     return HttpResponse("mail sent")

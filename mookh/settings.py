@@ -111,6 +111,9 @@ TEMPLATES = [
     },
 ]
 
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
+SENDGRID_API_KEY = "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"
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 WSGI_APPLICATION = 'mookh.wsgi.application'
@@ -128,13 +131,13 @@ DATABASES = {
     }
 }
 
-
+DEFAULT_FROM_EMAIL='james.komoh@gmail.com'
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 

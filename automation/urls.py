@@ -1,4 +1,6 @@
 from django.conf.urls import re_path
+from django.urls import path
+from . import views
 
 from .views import (
     AppointmentCreateView,
@@ -23,4 +25,5 @@ urlpatterns = [
     re_path(r'^(?P<pk>[0-9]+)/delete$',
             AppointmentDeleteView.as_view(),
             name='delete_appointment'),
+    path('send-email/', views.sendEmail, name='send-email'),
 ]

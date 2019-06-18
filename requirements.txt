@@ -57,3 +57,17 @@ watchdog==0.8.3
 watchdog-gevent==0.1.0
 whitenoise==4.1.2
 wrapt==1.11.1
+
+# MESSAGING DEPENDENCIES
+arrow==0.12.1
+django-dramatiq==0.1.5
+dramatiq[rabbitmq,watch]==1.4
+redis==3.0.1
+django-dotenv==1.4.2
+django-forms-bootstrap==3.1.0
+django-timezone-field==3.0
+psycopg2-binary==2.7.6
+twilio==6.21.0
+
+# SECURITY WARNING: keep the secret key used in production secret!
+# SECRET_KEY = 't5q9c&24jwr!dq66yv6%te%_qt)vkifylw$&q^az6-s&i-tasy'
