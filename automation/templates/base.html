@@ -8,7 +8,6 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>{% block title %}{% endblock title %} - SMS Schedule Reminders</title>
-    <a href="{% url 'send-email'%}">Send Email</a>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -41,6 +40,7 @@
           <ul class="nav navbar-nav">
             <li><a href="{% url 'new_appointment' %}">New</a></li>
             <li><a href="{% url 'list_appointments' %}">List</a></li>
+            <li><a href="{% url 'send-email' %}">Send Email</a></li>
           </ul>
         </div>
       </div>
