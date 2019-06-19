@@ -32,7 +32,6 @@ TWILIO_ACCOUNT_SID = 'ACbf5ce1913ccf29add4fce223bf3793eb'
 TWILIO_AUTH_TOKEN = '69eebb1494cbf6960029840ebca952ed'
 
 
-
 DRAMATIQ_BROKER = {
     "BROKER": "dramatiq.brokers.redis.RedisBroker",
     "OPTIONS": {
@@ -69,7 +68,8 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'bootstrap4',
     'django_forms_bootstrap',
-    'timezone_field'
+    'timezone_field',
+    'sendgrid'
 )
 
 LOCAL_APPS = (
@@ -145,3 +145,5 @@ USE_TZ = True
 STATIC_ROOT = BASE_DIR + '/staticfiles'
 
 STATIC_URL = '/static/'
+
+SENDGRID_API_KEY = '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'
