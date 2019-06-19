@@ -6,7 +6,7 @@ import dramatiq
 from django.conf import settings
 from twilio.rest import Client
 
-from .models import Appointment
+from .models import Scheduling
 
 
 # Uses credentials from the TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN
@@ -15,24 +15,24 @@ client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 
 
 @dramatiq.actor
-def send_sms_reminder(appointment_id):
+def send_sms_reminder(schedule_id):
     """Send a reminder to a phone using Twilio SMS"""
-    # Get our appointment from the database
+    # Get our schedule from the database
     try:
-        appointment = Appointment.objects.get(pk=appointment_id)
-    except Appointment.DoesNotExist:
-        # The appointment we were trying to remind someone about
+        schedule = Scheduling.objects.get(pk=schedule_id)
+    except Scheduling.DoesNotExist:
+        # The schedule we were trying to remind someone about
         # has been deleted, so we don't need to do anything
         return
 
-    appointment_time = arrow.get(appointment.time, appointment.time_zone.zone)
-    body = 'Hi {0}. You have an appointment coming up at {1}.'.format(
-        appointment.name,
-        appointment_time.format('h:mm a')
+    schedule_time = arrow.get(schedule.time, schedule.time_zone.zone)
+    body = 'Hi {0}. You have an SMS schedule coming up at {1}.'.format(
+        schedule.name,
+        schedule_time.format('h:mm a')
     )
 
     client.messages.create(
         body=body,
-        to=appointment.phone_number,
+        to=schedule.phone_number,
         from_=settings.TWILIO_NUMBER,
     )

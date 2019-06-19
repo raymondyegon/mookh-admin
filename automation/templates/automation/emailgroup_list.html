@@ -1,0 +1,48 @@
+{% extends "automation/base.html" %}
+
+{% block title %}Upcoming reminders{% endblock title %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-9">
+
+      <div class="page-header">
+        <h1>Email Groups</h1>
+      </div>
+
+      {% if not object_list %}
+        <p><strong>No Groups</strong> Why not <a href="{% url 'new_group'%}">Add one?</a>
+      {% endif %}
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Members</th>
+            <th>Users</th>
+            <!-- <th>Created at</th>s -->
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for group in object_list %}
+            <tr>
+              <td><a href="{{ group.get_absolute_url }}">{{ group.pk }}</a></td>
+              <td>{{ group.Title }}</td>
+              <td>{{ group.members }}</td>
+              <td>{{ group.users }}</td>
+              <!-- <td></td> -->
+              <td>
+                <a class="btn btn-default btn-xs" href="{% url 'edit_group' group.pk %}">Edit</a>
+                <a class="btn btn-xs btn-danger" href="">Delete</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <a class="btn btn-primary" href="{% url 'new_group' %}">New</a>
+    </div>
+  </div>
+{% endblock %}

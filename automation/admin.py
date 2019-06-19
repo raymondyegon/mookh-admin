@@ -1,6 +1,6 @@
 from django.contrib import admin
+from .models import *
 
-from .models import Appointment
-
-# Register our Appointment model with the basic ModelAdmin
-admin.site.register(Appointment, admin.ModelAdmin)
+# Register your models here.
+admin.site.register(AddUser)
+admin.site.register(EmailGroup)

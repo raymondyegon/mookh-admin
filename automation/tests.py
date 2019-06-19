@@ -1,122 +1,43 @@
-from django.core.exceptions import ValidationError
 from django.test import TestCase
-from model_mommy import mommy
-
-from reminders.models import Appointment
-from reminders.tasks import send_sms_reminder
-
-import arrow
-
-# Import Mock if we're running on Python 2
-import six
-
-if six.PY3:
-    from unittest.mock import patch
-else:
-    from mock import patch
+from .models import AddUser, EmailGroup
 
 
-class AppointmentTest(TestCase):
+class AddUserTestClass(TestCase):
+    # Set up method
+    def setUp(self):
+        self.user = AddUser(id=1, first_name='New', last_name='User',
+                            email='test@user.com', phone=12345678)
 
-    @patch('reminders.models.Appointment.schedule_reminder', return_value='fake-id')
-    def test_str(self, _):
-        # Arrange
-        appointment = mommy.make(Appointment, name='John')
+    # Testing instance
+    def test_instance(self):
+        self.assertTrue(isinstance(self.user, AddUser))
 
-        # Assert
-        self.assertEqual(
-            str(appointment),
-            'Appointment #{0} - {1}'.format(appointment.pk, appointment.name))
-
-    @patch('reminders.models.Appointment.schedule_reminder', return_value='fake-id')
-    def test_get_absolute_url(self, _):
-        # Arrange
-        appointment = mommy.make(Appointment)
-
-        # Assert
-        self.assertEqual(
-            appointment.get_absolute_url(),
-            '/appointments/{0}'.format(appointment.pk))
-
-    @patch('reminders.models.Appointment.schedule_reminder', return_value='fake-id')
-    def test_clean_invalid_appointment(self, _):
-        # Arrange
-        time_in_past = arrow.utcnow().replace(minutes=-10)
-        appointment = mommy.make(Appointment, time=time_in_past.datetime)
-
-        # Assert
-        with self.assertRaises(ValidationError):
-            appointment.clean()
-
-    @patch('reminders.models.Appointment.schedule_reminder', return_value='fake-id')
-    def test_clean_valid_appointment(self, _):
-        # Arrange
-        time_in_future = arrow.utcnow().replace(minutes=+10)
-        appointment = mommy.make(Appointment, time=time_in_future.datetime)
-
-        # Assert
-        try:
-            appointment.clean()
-        except ValidationError:
-            self.fail(
-                'appointment with time in the past raised ValidationError')
-
-    def test_schedule_reminder(self):
-        # Arrange
-        with patch('reminders.models.Appointment.schedule_reminder', return_value='fake-id'):
-            appointment = mommy.make(Appointment)
-
-        # Act
-        with patch.object(send_sms_reminder, 'send_with_options') as mock:
-            appointment.schedule_reminder()
-
-        # Assert
-        self.assertTrue(mock.called)
-
-    @patch('reminders.models.Appointment.schedule_reminder', return_value='fake-id')
-    def test_save_initial_creation(self, mock):
-        # Act
-        appointment = mommy.make(Appointment)
-
-        # Assert
-        self.assertTrue(mock.called)
-        self.assertEqual(appointment.task_id, 'fake-id')
-
-    @patch('reminders.models.Appointment.schedule_reminder', return_value='fake-id')
-    def test_save_revoke_existing_task(self, _):
-        # Arrange
-        appointment = mommy.make(Appointment)
-
-        # Act
-        with patch('reminders.models.Appointment.cancel_task') as mock:
-            appointment.save()
-
-        # Assert
-        self.assertTrue(mock.called)
+    def test_get_full_name(self):
+        self.user.save()
+        self.assertEqual(self.user.full_name, 'New User')
 
 
-class SendReminderTest(TestCase):
-    @patch('reminders.models.Appointment.schedule_reminder', return_value='fake-id')
-    def test_create_message(self, _):
-        # Arrange
-        appointment = mommy.make(Appointment)
+class EmailGroupTestClass(TestCase):
+    # Setup Method
+    def setUp(self):
+        self.user = AddUser(first_name='New', last_name='User',
+                            email='test@user.com', phone=123456789)
+        self.group = EmailGroup(id=1, Title='Testing',
+                                users=self.user, members=1)
 
-        # Act
-        with patch('twilio.rest.api.v2010.account.message.MessageList.create') as mock:
-            send_sms_reminder(appointment.pk)
+    # Testing instance
+    def test_instance(self):
+        self.assertTrue(isinstance(self.group, EmailGroup))
 
-        # Assert
-        self.assertTrue(mock.called)
+    def test_create_EmailGroup(self):
+        self.user.save()
+        self.group.create_EmailGroup()
+        self.assertTrue(len(EmailGroup.objects.all()) > 0)
 
-    @patch('reminders.models.Appointment.schedule_reminder', return_value='fake-id')
-    def test_deleted_appointment(self, _):
-        # Arrange
-        appointment = mommy.make(Appointment)
-        appointment.delete()
-
-        # Act
-        with patch('twilio.rest.api.v2010.account.message.MessageList.create') as mock:
-            send_sms_reminder(appointment.pk)
-
-        # Assert
-        self.assertFalse(mock.called)
+    def test_delete_business(self):
+        self.group.delete_EmailGroup()
+        self.assertTrue(len(EmailGroup.objects.all()) == 0)
+    
+    # def test_find_EmailGroup(self):
+    #     self.group = EmailGroup.find_EmailGroup(1)
+    #     self.assertEqual(self.group.id, 1)

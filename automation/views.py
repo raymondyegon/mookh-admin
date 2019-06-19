@@ -1,106 +1,124 @@
+import os
+from django.shortcuts import render
+from .models import Scheduling, EmailGroup, AddUser
+from django.views.generic import CreateView
+from django.contrib import messages
+from django.http import HttpResponse
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic import DetailView, FormView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from django.shortcuts import render
-
-
-from .models import Appointment
-
-
-
-
-class AppointmentListView(ListView):
-    """Shows users a list of appointments"""
-
-    model = Appointment
-
-
-class AppointmentDetailView(DetailView):
-    """Shows users a single appointment"""
-
-    model = Appointment
-
-
-class AppointmentCreateView(SuccessMessageMixin, CreateView):
-    """Powers a form to create a new appointment"""
-
-    model = Appointment
-    fields = ['name', 'phone_number', 'time', 'time_zone']
-    success_message = 'Appointment successfully created.'
-
-
-class AppointmentUpdateView(SuccessMessageMixin, UpdateView):
-    """Powers a form to edit existing appointments"""
-
-    model = Appointment
-    fields = ['name', 'phone_number', 'time', 'time_zone']
-    success_message = 'Appointment successfully updated.'
-
-
-class AppointmentDeleteView(DeleteView):
-    """Prompts users to confirm deletion of an appointment"""
-
-    model = Appointment
-    success_url = reverse_lazy('list_appointments')
-
-
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import From, To, PlainTextContent, HtmlContent, Mail
+from .forms import SendEmailForm
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 
-def sendEmail(request):
-    mail = EmailMultiAlternatives(
-    subject="Email Test",
-    body="This is a simple text email body.",
-    from_email="K.O.M.O <james.komoh@gmail.com>",
-    to=["juniorgichohi@gmail.com"],
-    headers={"Reply-To": "juniorgichohi@gmail.com"}
+# Create your views here.
+
+
+class SchedulingCreateView(SuccessMessageMixin, CreateView):
+    """Powers a form to create a new schedule"""
+
+    model = Scheduling
+    fields = ['name', 'phone_number', 'time', 'time_zone']
+    success_message = 'Schedule successfully created.'
+    success_url = reverse_lazy('list_schedules')
+
+
+class SchedulingListView(ListView):
+    """Shows users a list of schedules"""
+
+    model = Scheduling
+
+
+class SchedulingDetailView(DetailView):
+    """Shows users a single schedule"""
+
+    model = Scheduling
+
+
+class SchedulingUpdateView(SuccessMessageMixin, UpdateView):
+    """Powers a form to edit existing schedules"""
+
+    model = Scheduling
+    fields = ['name', 'phone_number', 'time', 'time_zone']
+    success_message = 'Schedule successfully updated.'
+    success_url = reverse_lazy('view_schedules')
+
+
+class SchedulingDeleteView(DeleteView):
+    """Prompts users to confirm deletion of an schedule"""
+
+    model = Scheduling
+    success_url = reverse_lazy('list_schedules')
+
+
+class AddEmailGroupCreateView(SuccessMessageMixin, CreateView):
+    model = EmailGroup
+    fields = ['Title', 'users', 'members']
+    success_message = 'Group successfully created.'
+    success_url = reverse_lazy('group_list')
+
+
+class AddEmailGroupListView(ListView):
+    """Shows users a list of schedules"""
+
+    model = EmailGroup
+
+
+class AddUsersToGroupUpdateView(SuccessMessageMixin, UpdateView):
+    model = AddUser
+    fields = ['first_name',  'last_name', 'email', 'phone']
+    success_message = 'Group successfully updated.'
+
+
+class EmailGroupDetailView(DetailView):
+    """Shows users a single schedule"""
+
+    model = EmailGroup
+
+
+def emails(request):
+    sendgrid_client = SendGridAPIClient(
+        api_key=os.environ.get('SENDGRID_API_KEY'))
+    from_email = From('admin@mookh.co.ke')
+    to_email = To('james.komoh@gmail.com')
+    subject = 'Testing'
+    plain_text_content = PlainTextContent(
+        'It works'
     )
-    # Add template
-    # mail.template_id = 'YOUR TEMPLATE ID FROM SENDGRID ADMIN'
-
-    # Replace substitutions in sendgrid template
-    mail.substitutions = {'%username%': 'komo'}
-
-    # Attach file
-    with open('emailTest.pdf', 'rb') as file:
-        mail.attachments = [
-            ('emailTest.pdf', file.read(), 'application/pdf')
-        ]
-
-    mail.attach_alternative(
-        "<p>This is a simple HTML email body</p>", "text/html"
+    html_content = HtmlContent(
+        '<strong>Working</strong>'
     )
+    message = Mail(from_email, to_email, subject,
+                   plain_text_content, html_content)
+    response = sendgrid_client.send(message=message)
 
-    mail.send()
-    return render(request, 'appointments/send-email/emailsent.html')
+    return HttpResponse('Email Sent!')
 
-# # sending email
-# def send_email(request):
 
-#     all_users = User.objects.all()
-#     subject ='Newsletter'
-#     from_email = settings.DEFAULT_FROM_EMAIL
+class SendUserEmails(FormView):
+    template_name = 'automation/send_email.html'
+    form_class = SendEmailForm
+    success_message  = 'Email Sent'
+    success_url = reverse_lazy('group_list')
+    
+    def form_valid(self, form):
+        sendgrid_client = SendGridAPIClient(
+        api_key=os.environ.get('SENDGRID_API_KEY'))
+        from_email = From('admin@mookh.co.ke')
+        to_email = form.cleaned_data['users']
+        subject = form.cleaned_data['subject']
+        plain_text_content = PlainTextContent(
+            'It works'
+        )
+        text = form.cleaned_data['message']
+        message = Mail(from_email, to_email, subject, plain_text_content, text)
+        response = sendgrid_client.send(message=message)
 
-#     # newsletter content below. can also entered via txt file or html file
-#     content_message = 'Newsletter content <a href="https://programmedtocode.wordpress.com/>CLICK LINK</a>"'
-#     for user_email in all_users:
-#         """
-#         to_email = [user_email.email]
-#         context = {
-#         'email' : from_email,
-#         'message' : content_message,
-#         }
-#         final_send_content = get_template('Newsletter_content.txt').render(context)
-#         """
-
-#         if user_email.username == 'owner':  # to ignore superuser 'owner' 
-#             continue
-#         else:
-#             to_email = user_email.email
-#             send_mail(subject,content_message,from_email, [to_email], fail_silently=True)
-
-#     return HttpResponse("mail sent")
+        return super(SendUserEmails, self).form_valid(form)

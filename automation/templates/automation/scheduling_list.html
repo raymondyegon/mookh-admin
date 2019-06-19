@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "automation/base.html" %}
 
 {% block title %}Upcoming reminders{% endblock title %}
 
@@ -7,11 +7,11 @@
     <div class="col-lg-9">
 
       <div class="page-header">
-        <h1>Appointments</h1>
+        <h1>Schedules</h1>
       </div>
 
       {% if not object_list %}
-        <p><strong>No upcoming appointments.</strong> Why not <a href="{% url 'new_schedule' %}">schedule one?</a>
+        <p><strong>No upcoming schedules.</strong> Why not <a href="{% url 'new_schedule'%}">schedule one?</a>
       {% endif %}
 
       <table class="table table-striped">
@@ -26,16 +26,16 @@
           </tr>
         </thead>
         <tbody>
-          {% for appointment in object_list %}
+          {% for schedule in object_list %}
             <tr>
-              <td><a href="{{ appointment.get_absolute_url }}">{{ appointment.pk }}</a></td>
-              <td>{{ appointment.name }}</td>
-              <td>{{ appointment.phone_number }}</td>
-              <td>{{ appointment.time }}</td>
-              <td>{{ appointment.created }}</td>
+              <td><a href="{{ schedule.get_absolute_url }}">{{ schedule.pk }}</a></td>
+              <td>{{ schedule.name }}</td>
+              <td>{{ schedule.phone_number }}</td>
+              <td>{{ schedule.time }}</td>
+              <td>{{ schedule.created }}</td>
               <td>
-                <a class="btn btn-default btn-xs" href="{% url 'edit_appointment' appointment.pk %}">Edit</a>
-                <a class="btn btn-xs btn-danger" href="{% url 'delete_appointment' appointment.pk %}">Delete</a>
+                <a class="btn btn-default btn-xs" href="{% url 'edit_schedule' schedule.pk %}">Edit</a>
+                <a class="btn btn-xs btn-danger" href="{% url 'delete_schedule' schedule.pk %}">Delete</a>
               </td>
             </tr>
           {% endfor %}
