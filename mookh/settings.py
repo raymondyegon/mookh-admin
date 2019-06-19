@@ -59,6 +59,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 DJANGO_APPS = (
+    'admin_tools',
+    'fluent_dashboard',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
     'django_dramatiq',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -75,13 +80,10 @@ THIRD_PARTY_APPS = (
     'django_forms_bootstrap',
     'timezone_field',
 
-    'fluent_dashboard',
+    
 
     # enable the admin
-    'admin_tools',
-    'admin_tools.theming',
-    'admin_tools.menu',
-    'admin_tools.dashboard',
+    
 )
 
 LOCAL_APPS = (
