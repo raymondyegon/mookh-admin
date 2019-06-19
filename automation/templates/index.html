@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "automation/base.html" %}
 
 {% block title %}Home{% endblock title %}
 
@@ -6,14 +6,14 @@
   <div class="row">
     <div class="col-lg-9">
       
-      <h1>Mookh SMS Scheduling and Reminders</h1>
+      <h1>SMS Scheduling with Django</h1>
 
-      <p>This demo application will show you how to implement SMS appointment reminders with <a href="http://twilio.com">Twilio</a> in Django.
+      <p>This application implements SMS & Email scheduling with <a href="http://twilio.com">Twilio</a> and <a href="http://sendgrid.com">Sendgrid</a> in Django.
 
-      <p><a class="btn btn-primary btn-xs" href="{% url 'new_schedule' %}">Create a new Appointment</a> to see how it works!</p>
+      <p><a class="btn btn-primary btn-xs" href="{% url 'new_schedule' %}">Create SMS Schedule</a> to see how it works!</p>
+      <p><a class="btn btn-primary btn-xs" href="{% url 'email' %}">Send Emails</a> to see how it works!</p>
 
     </div>
 
   </div><!--/row-->
-  
 {% endblock %}
