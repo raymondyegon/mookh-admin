@@ -71,7 +71,8 @@ DJANGO_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+    'controlcenter',
 )
 
 THIRD_PARTY_APPS = (
@@ -88,6 +89,12 @@ LOCAL_APPS = (
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+CONTROLCENTER_DASHBOARDS = (
+('mydash', 'mookh-admin.dashboards.MyDashboard'),
+)
+
+
 
 ADMIN_TOOLS_INDEX_DASHBOARD = 'fluent_dashboard.dashboard.FluentIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'fluent_dashboard.dashboard.FluentAppIndexDashboard'

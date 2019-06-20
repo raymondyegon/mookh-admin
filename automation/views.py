@@ -15,9 +15,6 @@ from django.views.generic.list import ListView
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import From, To, PlainTextContent, HtmlContent, Mail
 from .forms import SendEmailForm
-from django.core.mail import send_mail
-from django.core.mail import EmailMultiAlternatives
-
 # Create your views here.
 
 
@@ -60,7 +57,7 @@ class SchedulingDeleteView(DeleteView):
 
 class AddEmailGroupCreateView(SuccessMessageMixin, CreateView):
     model = EmailGroup
-    fields = ['Title', 'users', 'members']
+    fields = ['Title']
     success_message = 'Group successfully created.'
     success_url = reverse_lazy('group_list')
 

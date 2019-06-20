@@ -6,3 +6,4 @@ class SendEmailForm(forms.Form):
         attrs={'placeholder': ('Subject')}))
     message = forms.CharField(widget=forms.Textarea)
     users=forms.CharField()
+    
