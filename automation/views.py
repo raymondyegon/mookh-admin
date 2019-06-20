@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import render
-from .models import Scheduling, EmailGroup, AddUser
+from .models import Scheduling, EmailGroup, AddUser, SchedulingEmails
 from django.views.generic import CreateView
 from django.contrib import messages
 from django.http import HttpResponse
@@ -119,3 +119,12 @@ class SendUserEmails(FormView):
         response = sendgrid_client.send(message=message)
 
         return super(SendUserEmails, self).form_valid(form)
+
+# EMAILS SCHEDULING
+class EmailSchedulingCreateView(SuccessMessageMixin, CreateView):
+    """Powers a form to create a new schedule"""
+
+    model = SchedulingEmails
+    fields = ['name', 'email', 'time', 'time_zone']
+    success_message = 'Email Schedule successfully created.'
+    success_url = reverse_lazy('list_schedules')
