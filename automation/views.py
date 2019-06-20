@@ -111,9 +111,7 @@ class SendUserEmails(FormView):
         from_email = From('admin@mookh.co.ke')
         to_email = form.cleaned_data['users']
         subject = form.cleaned_data['subject']
-        plain_text_content = PlainTextContent(
-            'It works'
-        )
+        plain_text_content = PlainTextContent('It works')
         text = form.cleaned_data['message']
         message = Mail(from_email, to_email, subject, plain_text_content, text)
         response = sendgrid_client.send(message=message)

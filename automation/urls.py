@@ -1,5 +1,4 @@
 
-
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import re_path
@@ -10,7 +9,7 @@ from .views import SchedulingCreateView, SchedulingListView, SchedulingDeleteVie
 urlpatterns = [
     # List and detail views
     re_path(r'^$', SchedulingListView.as_view(), name='list_schedules'),
-    re_path(r'^$', EmailSchedulingListView.as_view(), name='list_emailschedules'),
+    re_path(r'^emails/$', EmailSchedulingListView.as_view(), name='list_emailschedules'),
 #     DETAIL VIEWS
     re_path(r'^(?P<pk>[0-9]+)$',
             SchedulingDetailView.as_view(),

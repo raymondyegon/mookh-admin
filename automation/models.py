@@ -128,7 +128,7 @@ class EmailGroup(models.Model):
 
 class SchedulingEmails(models.Model):
     name = models.CharField(max_length=150)
-    email = models.EmailField(max_length=15)
+    email = models.EmailField(max_length=40)
     time = models.DateTimeField()
     time_zone = TimeZoneField(default='Africa/Nairobi')
 

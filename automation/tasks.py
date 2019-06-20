@@ -6,7 +6,7 @@ import dramatiq
 from django.conf import settings
 from twilio.rest import Client
 
-from .models import Scheduling
+from .models import Scheduling, SchedulingEmails
 
 
 # Uses credentials from the TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN
@@ -27,6 +27,30 @@ def send_sms_reminder(schedule_id):
 
     schedule_time = arrow.get(schedule.time, schedule.time_zone.zone)
     body = 'Hi {0}. You have an SMS schedule coming up at {1}.'.format(
+        schedule.name,
+        schedule_time.format('h:mm a')
+    )
+
+    client.messages.create(
+        body=body,
+        to=schedule.phone_number,
+        from_=settings.TWILIO_NUMBER,
+    )
+
+
+@dramatiq.actor
+def send_email_reminder(schedule_id):
+    """Create an email schedule using SendGrid Emails"""
+    # Get our schedule from the database
+    try:
+        schedule = SchedulingEmails.objects.get(pk=schedule_id)
+    except SchedulingEmails.DoesNotExist:
+        # The schedule we were trying to remind someone about
+        # has been deleted, so we don't need to do anything
+        return
+
+    schedule_time = arrow.get(schedule.time, schedule.time_zone.zone)
+    body = 'Hi {0}. You have an Meeting coming up at {1}.'.format(
         schedule.name,
         schedule_time.format('h:mm a')
     )

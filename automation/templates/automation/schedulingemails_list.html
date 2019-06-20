@@ -11,7 +11,7 @@
       </div>
 
       {% if not object_list %}
-        <p><strong>No upcoming schedules.</strong> Why not <a href="{% url 'new_emailschedule'%}">schedule one?</a>
+        <p><strong>No upcoming email schedules.</strong> Why not <a href="{% url 'new_emailschedule'%}">schedule one?</a>
       {% endif %}
 
       <table class="table table-striped">
@@ -28,21 +28,21 @@
         <tbody>
           {% for emailschedule in object_list %}
             <tr>
-              <td><a href="{{ schedule.get_absolute_url }}">{{ emailschedule.pk }}</a></td>
+              <td><a href="{{ emailschedule.get_absolute_url }}">{{ emailschedule.pk }}</a></td>
               <td>{{ emailschedule.name }}</td>
               <td>{{ emailschedule.email }}</td>
               <td>{{ emailschedule.time }}</td>
               <td>{{ emailschedule.created }}</td>
               <td>
-                <a class="btn btn-default btn-xs" href="{% url 'edit_emailschedule' schedule.pk %}">Edit</a>
-                <a class="btn btn-xs btn-danger" href="{% url 'delete_emailschedule' schedule.pk %}">Delete</a>
+                <a class="btn btn-default btn-xs" href="{% url 'edit_emailschedule' emailschedule.pk %}">Edit</a>
+                <a class="btn btn-xs btn-danger" href="{% url 'delete_emailschedule' emailschedule.pk %}">Delete</a>
               </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
 
-      <a class="btn btn-primary" href="{% url 'new_schedule' %}">New</a>
+      <a class="btn btn-primary" href="{% url 'new_emailschedule' %}">New</a>
     </div>
   </div>
 {% endblock %}
