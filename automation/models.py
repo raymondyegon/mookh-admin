@@ -140,7 +140,7 @@ class SchedulingEmails(models.Model):
         return 'SchedulingEmails #{0} - {1}'.format(self.pk, self.name)
 
     def get_absolute_url(self):
-        return reverse('view_schedules', args=[str(self.id)])
+        return reverse('view_emailschedules', args=[str(self.id)])
 
     def clean(self):
         """Checks that emails are not scheduled in the past"""

@@ -121,10 +121,39 @@ class SendUserEmails(FormView):
         return super(SendUserEmails, self).form_valid(form)
 
 # EMAILS SCHEDULING
+
+
 class EmailSchedulingCreateView(SuccessMessageMixin, CreateView):
     """Powers a form to create a new schedule"""
 
     model = SchedulingEmails
     fields = ['name', 'email', 'time', 'time_zone']
     success_message = 'Email Schedule successfully created.'
-    success_url = reverse_lazy('list_schedules')
+    success_url = reverse_lazy('list_emailschedules')
+
+class EmailSchedulingListView(ListView):
+    """Shows users a list of schedules"""
+
+    model = SchedulingEmails
+
+
+class EmailSchedulingDetailView(DetailView):
+    """Shows users a single schedule"""
+
+    model = SchedulingEmails
+
+
+class EmailSchedulingUpdateView(SuccessMessageMixin, UpdateView):
+    """Powers a form to edit existing email schedules"""
+
+    model = SchedulingEmails
+    fields = ['name', 'email', 'time', 'time_zone']
+    success_message = 'Email Schedule successfully updated.'
+    success_url = reverse_lazy('view_emailschedules')
+
+
+class EmailSchedulingDeleteView(DeleteView):
+    """Prompts users to confirm deletion of an schedule"""
+
+    model = SchedulingEmails
+    success_url = reverse_lazy('list_emailschedules')
