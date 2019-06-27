@@ -17,7 +17,10 @@ from sendgrid.helpers.mail import From, To, PlainTextContent, HtmlContent, Mail
 from .forms import SendEmailForm
 # Create your views here.
 
+def home(request):
+    return render(request, 'automation/home.html')
 
+    
 class SchedulingCreateView(SuccessMessageMixin, CreateView):
     """Powers a form to create a new schedule"""
 
@@ -82,7 +85,7 @@ class EmailGroupDetailView(DetailView):
 
 def emails(request):
     sendgrid_client = SendGridAPIClient(
-        api_key=os.environ.get('SENDGRID_API_KEY'))
+    api_key=os.environ.get('SENDGRID_API_KEY'))
     from_email = From('admin@mookh.co.ke')
     to_email = To('james.komoh@gmail.com')
     subject = 'Testing'
@@ -109,6 +112,9 @@ class SendUserEmails(FormView):
         sendgrid_client = SendGridAPIClient(
         api_key=os.environ.get('SENDGRID_API_KEY'))
         from_email = From('admin@mookh.co.ke')
+        {
+        "send_at": 1561035240
+        }
         to_email = form.cleaned_data['users']
         subject = form.cleaned_data['subject']
         plain_text_content = PlainTextContent('It works')

@@ -60,11 +60,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 DJANGO_APPS = (
-    'admin_tools',
-    'fluent_dashboard',
-    'admin_tools.theming',
-    'admin_tools.menu',
-    'admin_tools.dashboard',
     'django_dramatiq',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -90,15 +85,9 @@ LOCAL_APPS = (
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-CONTROLCENTER_DASHBOARDS = (
-('mydash', 'mookh-admin.dashboards.MyDashboard'),
-)
 
 
 
-ADMIN_TOOLS_INDEX_DASHBOARD = 'fluent_dashboard.dashboard.FluentIndexDashboard'
-ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'fluent_dashboard.dashboard.FluentAppIndexDashboard'
-ADMIN_TOOLS_MENU = 'fluent_dashboard.menu.FluentMenu'
 
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -137,6 +126,7 @@ TEMPLATES = [
 
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
 SENDGRID_API_KEY = "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"
+SENDGRID_SENDER = 'admin@mook.co.ke'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

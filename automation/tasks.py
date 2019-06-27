@@ -7,7 +7,12 @@ from django.conf import settings
 from twilio.rest import Client
 
 from .models import Scheduling, SchedulingEmails
+from . views import *
 
+# SEND GRID IMPORTS
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import From, To, PlainTextContent, HtmlContent, Mail
+from .forms import SendEmailForm
 
 # Uses credentials from the TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN
 # environment variables
@@ -55,8 +60,26 @@ def send_email_reminder(schedule_id):
         schedule_time.format('h:mm a')
     )
 
-    client.messages.create(
-        body=body,
-        to=schedule.phone_number,
-        from_=settings.TWILIO_NUMBER,
-    )
+    # client.messages.create(
+    #     body=body,
+    #     to=schedule.email,
+    #     from_=settings.SENDGRID_SENDER,
+    # )
+    class SendUserEmails(FormView):
+        template_name = 'automation/send_email.html'
+        form_class = SendEmailForm
+        success_message  = 'Email Sent'
+        success_url = reverse_lazy('group_list')
+    
+        def form_valid(self, form):
+            sendgrid_client = SendGridAPIClient(
+            api_key=os.environ.get('SENDGRID_API_KEY'))
+            from_email = From('admin@mookh.co.ke')
+            to_email = form.cleaned_data['users']
+            subject = form.cleaned_data['subject']
+            plain_text_content = PlainTextContent('It works')
+            text = form.cleaned_data['message']
+            message = Mail(from_email, to_email, subject, plain_text_content, text)
+            response = sendgrid_client.send(message=message)
+
+            return super(SendUserEmails, self).form_valid(form)
