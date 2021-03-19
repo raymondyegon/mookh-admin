@@ -16,7 +16,7 @@ django-imagekit==4.0.2
 django-mathfilters==0.4.0
 django-registration==3.0.1
 django-secretballot==1.0.0
-djangorestframework==3.9.4
+djangorestframework==3.11.2
 gunicorn==19.9.0
 hypothesis==4.23.0
 idna==2.8
